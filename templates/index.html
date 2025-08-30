@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+
+{% block title %}Calculadora de Series de Fourier{% endblock %}
+
+{% block main %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <!-- Formulario de cálculo -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-uni-red text-white text-center">
+                <h4 class="mb-0">Ingrese los parámetros</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="funcion" class="form-label">Función f(t):</label>
+                        <input type="text" class="form-control" id="funcion" name="funcion" value="t" required>
+                        <div class="form-text">
+                            Ej: "Piecewise((-10,(t>=-0.01)&(t<0)),(10,(t>=0)&(t<=0.01)),(0,True))"
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="T" class="form-label">Periodo T:</label>
+                        <input type="text" class="form-control" id="T" name="T" value="2*pi" required>
+                        <div class="form-text">Ej: 2*pi, 4, 10</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="N" class="form-label">Número de términos:</label>
+                        <input type="number" class="form-control" id="N" name="N" value="5" min="1" max="50" required>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-uni-red">Calcular Coeficientes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Fórmulas -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark text-white text-center">
+                <h4 class="mb-0">Fórmulas de los Coeficientes de Fourier</h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <p>\[a_0 = \frac{1}{T}\int_{-T/2}^{T/2} f(t)\, dt\]</p>
+                    <p>\[a_n = \frac{2}{T}\int_{-T/2}^{T/2} f(t)\cos\left(\frac{2\pi n t}{T}\right) dt\]</p>
+                    <p>\[b_n = \frac{2}{T}\int_{-T/2}^{T/2} f(t)\sin\left(\frac{2\pi n t}{T}\right) dt\]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        {% if resultado %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-uni-red text-white text-center">
+                <h4 class="mb-0">Resultados</h4>
+            </div>
+            <div class="card-body">
+                <div class="resultado-matematico">
+                    {{ resultado|safe }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Gráfica temporal -->
+        {% if grafica_temporal %}
+        <div class="card shadow-sm">
+            <div class="card-header bg-uni-red text-white text-center">
+                <h4 class="mb-0">Gráfica de la función en un periodo</h4>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ grafica_temporal}}" class="img-fluid" alt="Gráfica temporal de la función">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Gráfica de aproximación -->
+        {% if grafica_aproximacion %}
+        <div class="card shadow-sm">
+            <div class="card-header bg-uni-red text-white text-center">
+                <h4 class="mb-0">Gráfica de la Aproximación</h4>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ grafica_aproximacion}}" class="img-fluid" alt="Gráfica de la serie de Fourier">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Gráfica del espectro de frecuencias 1 -->
+        {% if grafica_frecuencias_b %}
+        <div class="card shadow-sm">
+            <div class="card-header bg-uni-red text-white text-center">
+                <h4 class="mb-0">Espectro de frecuencias bn</h4>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ grafica_frecuencias_b}}" class="img-fluid" alt="Espectro de frecuencias bn">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Gráfica del espectro de frecuencias 2 -->
+        {% if grafica_frecuencias_a %}
+        <div class="card shadow-sm">
+            <div class="card-header bg-uni-red text-white text-center">
+                <h4 class="mb-0">Espectro de frecuencias an</h4>
+            </div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ grafica_frecuencias_a}}" class="img-fluid" alt="Espectro de frecuencias an">
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
